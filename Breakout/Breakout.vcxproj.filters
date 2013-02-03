@@ -13,11 +13,49 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{eefba8f3-a476-4b5c-9f75-c8904b9e7e60}</UniqueIdentifier>
+      <Extensions>hlsl,fx</Extensions>
+    </Filter>
+    <Filter Include="Images">
+      <UniqueIdentifier>{29833379-b206-482f-96d5-c48a5bbbab7b}</UniqueIdentifier>
+      <Extensions>jpg,png</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Shader Classes">
+      <UniqueIdentifier>{e805e9fd-3c46-4c38-b112-46dfcf0f7564}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
     <None Include="images\stars.jpg">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="engine\color.ps">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="engine\color.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="engine\texture.ps">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="engine\texture.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="engine\data\stars.jpg">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="engine\data\swirl_ball_282px.png">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="engine\data\seafloor.dds">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="engine\data\background_texture.jpg">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="engine\data\breakout_bat.png">
+      <Filter>Images</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +80,24 @@
     <ClInclude Include="Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="D3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorShaderClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureShaderClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -61,6 +117,24 @@
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorShaderClass.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureShaderClass.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

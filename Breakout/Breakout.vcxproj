@@ -62,7 +62,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3dx10.lib;winmm.lib;comctl32.lib;d3d11.lib;d3dx11.lib;dxerr.lib;dxguid.lib;d3dx9.lib;d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx10.lib;d3d11.lib;d3dx11.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,27 +84,48 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="engine\color.ps" />
+    <None Include="engine\color.vs" />
+    <None Include="engine\data\background_texture.jpg" />
+    <None Include="engine\data\breakout_bat.png" />
+    <None Include="engine\data\seafloor.dds" />
+    <None Include="engine\data\stars.jpg" />
+    <None Include="engine\data\swirl_ball_282px.png" />
+    <None Include="engine\texture.ps" />
+    <None Include="engine\texture.vs" />
     <None Include="images\stars.jpg" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CameraClass.h" />
+    <ClInclude Include="ColorShaderClass.h" />
+    <ClInclude Include="D3D.h" />
     <ClInclude Include="D3DGraphics.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextureClass.h" />
+    <ClInclude Include="TextureShaderClass.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Breakout.cpp" />
+    <ClCompile Include="CameraClass.cpp" />
+    <ClCompile Include="ColorShaderClass.cpp" />
+    <ClCompile Include="D3D.cpp" />
     <ClCompile Include="D3DGraphics.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TextureClass.cpp" />
+    <ClCompile Include="TextureShaderClass.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -113,9 +134,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\DirectXTK\DirectXTK_Desktop_2010.vcxproj">
       <Project>{e0b52ae7-e160-4d32-bf3f-910b785e5a8e}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Breakout Content\Breakout Content.vcxproj">
-      <Project>{a32d84af-764c-4e71-9ff0-febe166bc957}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

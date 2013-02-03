@@ -1,81 +1,77 @@
 #include "StdAfx.h"
 #include "Window.h"
 
-static KeyboardServer kServ;
 
 
-Window::Window(){}
-LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
-{
-    switch( msg )
-    {
-        case WM_DESTROY:
-            PostQuitMessage( 0 );
-            return 0;
-		case WM_KEYDOWN:
-			switch( wParam )
-			{
-			case VK_UP:
-				kServ.OnUpPressed();
-				break;
-			case VK_DOWN:
-				kServ.OnDownPressed();
-				break;
-			case VK_LEFT:
-				kServ.OnLeftPressed();
-				break;
-			case VK_RIGHT:
-				kServ.OnRightPressed();
-				break;
-			case VK_SPACE:
-                kServ.OnSpacePressed();
-				break;
-			case VK_RETURN:
-				kServ.OnEnterPressed();
-				break;
-			}
-			break;
-		case WM_KEYUP:
-   			switch( wParam )
-			{
-			case VK_UP:
-				kServ.OnUpReleased();
-				break;
-			case VK_DOWN:
-				kServ.OnDownReleased();
-				break;
-			case VK_LEFT:
-				kServ.OnLeftReleased();
-				break;
-			case VK_RIGHT:
-				kServ.OnRightReleased();
-				break;
-			case VK_SPACE:
-				kServ.OnSpaceReleased();
-				break;
-			case VK_RETURN:
-				kServ.OnEnterReleased();
-				break;
-			}
-    }
 
-    return DefWindowProc( hWnd, msg, wParam, lParam );
+Window::Window(){
+m_hWnd = 0;
 }
 
-
-HWND Window::Create(int width, int height, LPCTSTR Name  )
+HWND Window::Create(int& screenWidth, int& screenHeight, LPCTSTR Name,  WNDPROC proc )
 {
- 
-	WNDCLASSEX wc = { sizeof( WNDCLASSEX ),CS_CLASSDC,MsgProc,0,0,
+	WNDCLASSEX wc;
+	DEVMODE dmScreenSettings;
+    m_applicationName = Name;
+	int posX, posY;
+	/*WNDCLASSEX wc = { sizeof( WNDCLASSEX ),CS_CLASSDC,MsgProc,0,0,
 					GetModuleHandle( NULL ),NULL,NULL,NULL,NULL,
 					Name,NULL };
     wcPointer = &wc;
-	wc.hbrBackground = NULL;
-  // wc.hIconSm = (HICON)LoadImage( hInst,MAKEINTRESOURCE( IDI_APPICON16 ),IMAGE_ICON,16,16,0 );
-//	wc.hIcon   = (HICON)LoadImage( hInst,MAKEINTRESOURCE( IDI_APPICON32 ),IMAGE_ICON,32,32,0 );
-    RegisterClassEx( &wc );
+	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);;
+    wc.hIcon   = LoadIcon(NULL, IDI_WINLOGO);
+  
+	wc.hIconSm = wc.hIcon;*/
 	
-	RECT wr;
+	// Setup the windows class with default settings.
+	wc.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+	wc.lpfnWndProc   = proc;
+	wc.cbClsExtra    = 0;
+	wc.cbWndExtra    = 0;
+	wc.hInstance     = m_hinstance;
+	wc.hIcon		 = LoadIcon(NULL, IDI_WINLOGO);
+	wc.hIconSm       = wc.hIcon;
+	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+	wc.lpszMenuName  = NULL;
+	wc.lpszClassName = m_applicationName;
+	wc.cbSize        = sizeof(WNDCLASSEX);
+	
+	  RegisterClassEx( &wc );
+
+	  // Determine the resolution of the clients desktop screen.
+	screenWidth  = GetSystemMetrics(SM_CXSCREEN);
+	screenHeight = GetSystemMetrics(SM_CYSCREEN);
+	
+	// Setup the screen settings depending on whether it is running in full screen or in windowed mode.
+	if(FULL_SCREEN)
+	{
+		// If full screen set the screen to maximum size of the users desktop and 32bit.
+		memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
+		dmScreenSettings.dmSize       = sizeof(dmScreenSettings);
+		dmScreenSettings.dmPelsWidth  = (unsigned long)screenWidth;
+		dmScreenSettings.dmPelsHeight = (unsigned long)screenHeight;
+		dmScreenSettings.dmBitsPerPel = 32;			
+		dmScreenSettings.dmFields     = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+		// Change the display settings to full screen.
+		ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN);
+
+		// Set the position of the window to the top left corner.
+		posX = posY = 0;
+	}
+	else
+	{
+		// If windowed then set it to 800x600 resolution.
+		screenWidth  = 800;
+		screenHeight = 600;
+
+		// Place the window in the middle of the screen.
+		posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth)  / 2;
+		posY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
+	}
+	m_hinstance = wc.hInstance;
+	/*RECT wr;
 	wr.left = 100;
 	wr.right = width + wr.left;
 	wr.top = 100;
@@ -84,19 +80,50 @@ HWND Window::Create(int width, int height, LPCTSTR Name  )
     HWND hWnd = CreateWindowW( Name,Name,
                               WS_OVERLAPPEDWINDOW,wr.left,wr.top,wr.right-wr.left,wr.bottom-wr.top,
                               NULL,NULL,wc.hInstance,NULL );
+							  */
+		// Create the window with the screen settings and get the handle to it.
+	m_hWnd= CreateWindowEx(WS_EX_APPWINDOW, m_applicationName, m_applicationName, 
+						    WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
+						    posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance, NULL);
 
-    ShowWindow( hWnd,SW_SHOWDEFAULT );
-    UpdateWindow( hWnd );
-	
 
-	return hWnd;
+   // Bring the window up on the screen and set it as main focus.
+	ShowWindow(m_hWnd, SW_SHOW);
+	SetForegroundWindow(m_hWnd);
+	SetFocus(m_hWnd);
+
+	return m_hWnd;
 }
 
 
-void Window::Close(LPCTSTR Name)
+
+void Window::ShutdownWindow()
+{
+	// Show the mouse cursor.
+	ShowCursor(true);
+
+	// Fix the display settings if leaving full screen mode.
+	if(FULL_SCREEN)
+	{
+		ChangeDisplaySettings(NULL, 0);
+	}
+
+	// Remove the window.
+	DestroyWindow(m_hWnd);
+	m_hWnd = NULL;
+
+	// Remove the application instance.
+	UnregisterClass(m_applicationName, m_hinstance);
+	m_hinstance = NULL;
+
+
+
+	return;
+}
+void Window::Close()
 {
 
-    UnregisterClass( Name, wcPointer->hInstance );
+    UnregisterClass( m_applicationName, m_hinstance );
 	
 }
 

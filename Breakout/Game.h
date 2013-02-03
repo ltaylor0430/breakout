@@ -7,11 +7,12 @@ class Game
 {
 
 public:
-   Game();
+    Game();
    ~Game();
    void Start();
 
 private:
+  Window myWindow;
   static bool IsExiting();
   void GameLoop();
 
@@ -19,11 +20,9 @@ private:
           ShowingMenu, Playing, Exiting };
   
   static GameState _gameState;
- 
   /******************
   /* User Functions */
 private:
     D3DGraphics gfx;
-
 	Window _mainWindow;
 };
