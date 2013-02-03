@@ -385,7 +385,9 @@ bool D3D::InitD3D(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool
 	IDXGIFactory* factory;
 	IDXGIAdapter* adapter;
 	IDXGIOutput* adapterOutput;
-	unsigned int numModes, i, numerator, denominator, stringLength;
+	//default values for numerator and denominator
+	//because my macbook pro windows vm is running in an unusual resolution and has issue with full screen
+	unsigned int numModes, i, numerator =60, denominator = 1, stringLength;  
 	DXGI_MODE_DESC* displayModeList;
 	DXGI_ADAPTER_DESC adapterDesc;
 	int error;
@@ -508,7 +510,8 @@ bool D3D::InitD3D(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool
 
 	// Set the refresh rate of the back buffer.
 	if(m_vsync_enabled)
-	{
+	{ 
+		
 	    swapChainDesc.BufferDesc.RefreshRate.Numerator = numerator;
 		swapChainDesc.BufferDesc.RefreshRate.Denominator = denominator;
 	}

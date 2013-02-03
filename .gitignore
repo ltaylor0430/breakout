@@ -4,3 +4,6 @@
 /Release
 /Debug
 /ipch
+
+#Log Files
+*.log
